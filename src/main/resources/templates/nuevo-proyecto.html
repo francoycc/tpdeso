@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuevo Proyecto</title>
+</head>
+<body>
+    <h1>Nuevo Proyecto</h1>
+    <h2 th:text="${fecha}"></h2>
+    <form th:action="@{/proyectos/guardar}" th:object="${proyecto}" method="post">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" th:field="*{nombre}" />
+        <label for="presupuestoMax">Presupeusto Max:</label>
+        <input readonly disabled type="number" id="presupuestoMax" th:field="*{presupuestoMaximo}" />
+        <button type="submit">Guardar</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>crearEditarVendedor</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+  <form th:action="@{/vendedor/guardar}" th:object="${vendedor}" method="post" class="formulario">
+    <label class="labelVendedor99" for="crearVendedor">Crear Vendedor</label>
+    <div class="contenedorCampos2">
+      <div class="divsVendedor">
+        <label class="labelVendedor" for="nombre">Nombre</label>
+        <input class="inputVendedor" type="text" id="nombre" th:field="*{nombre}" />
+      </div>
+      <div class="divsVendedor">
+        <label class="labelVendedor" for="direccion">Dirección</label>
+        <input class="inputVendedor" type="text" id="direccion" th:field="*{direccion}" />
+      </div>
+    </div>
+
+    <label class="labelVendedor99" for="coordenada">Coordenada</label>
+    <div class="contenedorCampos2">
+      <div class="divsVendedor">
+        <label class="labelVendedor" for="latitud">Latitud</label>
+        <input class="inputVendedor" type="text" id="latitud" th:field="*{latitud}" />
+      </div>
+      <div class="divsVendedor">
+        <label class="labelVendedor" for="latitud">Longitud</label>
+        <input class="inputVendedor" type="text" id="longitud" th:field="*{longitud}" />
+      </div>
+    </div>
+
+    <div class="contenedorBotonesVendedor">
+      <button class="botonesVendedor" type="submit">Crear Vendedor</button>
+      <form action="/vendedor" method="get">
+        <button class="botonesVendedor" type="submit">Cancelar</button>
+      </form>
+    </div>
+  </form>
+</body>
+
+</html>

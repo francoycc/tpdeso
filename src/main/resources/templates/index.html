@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>PedidosYA</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+  <h1 class="titulo">PEDIDOS YA</h1>
+  <ul class="menu0">
+    <div class="contenedorCampos0">
+      <form action="/vendedor" method="get">
+        <button type="submit" class="menues0">Vendedores</button>
+      </form>
+      <form action="/proyectos" method="get">
+        <button type="submit" class="menues0">Clientes</button>
+      </form>
+    </div>
+    <div class="contenedorCampos0">
+      <form action="/proyectos/nuevo" method="get">
+        <button type="submit" class="menues0">Items Menú</button>
+      </form>
+      <form action="/pedidos" method="get">
+        <button type="submit" class="menues0">Pedidos</button>
+      </form>
+    </div>
+  </ul>
+</body>
+</html>

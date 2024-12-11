@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Vendedores</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+  <h1 class="titulo">PEDIDOS YA</h1>
+  <ul class="menu1">
+    <form action="/vendedor" method="get">
+      <button type="submit" class="menues1">Vendedores</button>
+    </form>
+    <form action="/cliente" method="get">
+      <button type="submit" class="menues1">Clientes</button>
+    </form>
+    <form action="/itemsMenu" method="get">
+      <button type="submit" class="menues1">Items Menú</button>
+    </form>
+    <form action="/pedidos" method="get">
+      <button type="submit" class="menues1">Pedidos</button>
+    </form>
+    <form action="/" method="get">
+      <button type="submit" class="menues1">Volver</button>
+    </form>
+  </ul>
+
+  <form th:action="@{/vendedor/guardarVendedor}" th:object="${vendedor}" method="post" class="formulario">
+    <div class="contenedorCampos">
+      <div class="campoVendedor">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" th:field="*{nombre}" />
+      </div>
+      <div class="campoVendedor">
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" th:field="*{direccion}" />
+      </div>
+      <div class="campoVendedor">
+        <label for="coordenada">Latitud</label>
+        <input type="text" id="latitud" th:field="*{coordenada.latitud}" />
+      </div>
+      <div class="campoVendedor">
+        <label for="coordenada">Longitud</label>
+        <input type="text" id="longitud" th:field="*{coordenada.longitud}" />
+      </div>
+    </div>
+    <div class="contenedorBotonesVendedor">
+      <button class="botonesVendedor" type="submit">Buscar Vendedor</button>
+    </div>
+  </form>
+  <form class="contenedorBotonesVendedor" action="/vendedor/crearEditarVendedor" method="get">
+    <button class="botonesVendedor" type="submit">Crear Vendedor</button>
+  </form>
+
+  <table class="tablaVendedor" border="2" cellspacing="0" cellpadding="15">
+    <thead class="tablaVendedor">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Dirección</th>
+        <th>Coordenada</th>
+        <th width="300px">Editar/Eliminar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr th:each="vendedor : ${vendedores}">
+        <td>
+          <a th:href="@{/vendedor/{id}(id=${vendedor.id})}" th:text="${vendedor.id}"></a>
+        </td>
+        <td th:text="${vendedor.nombre}"></td>
+        <td th:text="${vendedor.direccion}"></td>
+        <td th:text="${vendedor.coordenada}"></td>
+        <td class="contenedorBotonesEditarEliminar">
+          <button class="botonesEditarVendedor" th:onclick="location.href='@{/vendedor/editar/{id}(id=${vendedor.id})}'" type="button">Editar Vendedor</button>
+          <button class="botonesEliminarVendedor" type="submit">Eliminar Vendedor</button>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</body>
+
+</html>
