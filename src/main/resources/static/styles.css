@@ -156,10 +156,9 @@ th {
 }
 
 .inputVendedor {
-  text-decoration: underline;
   text-align: center;
   justify-content: center;
-  font-size: 60px;
+  font-size: 40px;
   height: 40px;
   margin: 10px 10px;
 }

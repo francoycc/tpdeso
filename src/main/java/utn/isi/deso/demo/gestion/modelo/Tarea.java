@@ -17,10 +17,9 @@ import jakarta.persistence.JoinColumn;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@SequenceGenerator(name = "tarea_seq", sequenceName = "tarea_seq", allocationSize = 1)
 public class Tarea {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tarea_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String descripcion;
     @Column(name = "costo_por_hora")
@@ -34,9 +33,7 @@ public class Tarea {
     @Column(name = "fecha_fin")
     private Instant fechaFin;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "proyecto_id", nullable = false)
-    private Proyecto proyecto;
-
-
+    private Proyecto proyecto;*/
 }

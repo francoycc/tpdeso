@@ -2,21 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>crearEditarVendedor</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>Crear Editar / Vendedor</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/styles.css}">
 </head>
 
 <body>
+  <h1 class="titulo">PEDIDOS YA</h1>
   <form th:action="@{/vendedor/guardar}" th:object="${vendedor}" method="post" class="formulario">
     <label class="labelVendedor99" for="crearVendedor">Crear Vendedor</label>
     <div class="contenedorCampos2">
       <div class="divsVendedor">
+        <input type="hidden" name="id" th:value="${vendedor.id}" />
         <label class="labelVendedor" for="nombre">Nombre</label>
         <input class="inputVendedor" type="text" id="nombre" th:field="*{nombre}" />
       </div>
       <div class="divsVendedor">
-        <label class="labelVendedor" for="direccion">Dirección</label>
-        <input class="inputVendedor" type="text" id="direccion" th:field="*{direccion}" />
+        <label class="labelVendedor" for="dir">Dirección</label>
+        <input class="inputVendedor" type="text" id="dir" th:field="*{direccion}" />
       </div>
     </div>
 
@@ -24,20 +26,21 @@
     <div class="contenedorCampos2">
       <div class="divsVendedor">
         <label class="labelVendedor" for="latitud">Latitud</label>
-        <input class="inputVendedor" type="text" id="latitud" th:field="*{latitud}" />
+        <input class="inputVendedor" type="number" id="latitud" th:field="*{coordenada.lat}" />
       </div>
       <div class="divsVendedor">
         <label class="labelVendedor" for="latitud">Longitud</label>
-        <input class="inputVendedor" type="text" id="longitud" th:field="*{longitud}" />
+        <input class="inputVendedor" type="number" id="longitud" th:field="*{coordenada.lng}" />
       </div>
     </div>
 
     <div class="contenedorBotonesVendedor">
-      <button class="botonesVendedor" type="submit">Crear Vendedor</button>
-      <form action="/vendedor" method="get">
-        <button class="botonesVendedor" type="submit">Cancelar</button>
-      </form>
+      <button class="botonesVendedor" type="submit">Guardar Vendedor</button>
     </div>
+  </form>
+
+  <form class="contenedorBotonesVendedor" action="/vendedor" method="get">
+    <button style="background: red" type="submit" class="botonesVendedor">Cancelar</button>
   </form>
 </body>
 

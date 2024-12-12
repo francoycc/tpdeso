@@ -4,8 +4,6 @@
 <head>
   <title>Vendedores</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
-  <link rel="stylesheet" href="../static/styles.css" type="text/css" />
-
 </head>
 
 <body>
@@ -28,7 +26,7 @@
     </form>
   </ul>
 
-  <form th:action="@{/vendedor}" th:object="${vendedor}" method="post" class="formulario">
+  <form th:action="@{/vendedor/editarVendedor}" th:object="${vendedor}" method="post" class="formulario">
     <div class="contenedorCampos">
       <div class="campoVendedor">
         <label for="nombre">Nombre</label>
@@ -39,19 +37,19 @@
         <input type="text" id="direccion" th:field="*{direccion}" />
       </div>
       <div class="campoVendedor">
-        <label for="latitud">Latitud</label>
-        <input type="number" id="latitud" th:field="*{coordenada.lat}" />
+        <label for="coordenada">Latitud</label>
+        <input type="text" id="latitud" th:field="*{coordenada.lat}" />
       </div>
       <div class="campoVendedor">
-        <label for="longitud">Longitud</label>
-        <input type="number" id="longitud" th:field="*{coordenada.lng}" />
+        <label for="coordenada">Longitud</label>
+        <input type="text" id="longitud" th:field="*{coordenada.lng}" />
       </div>
     </div>
     <div class="contenedorBotonesVendedor">
-      <button style="background: purple" class="botonesVendedor" type="submit">Buscar Vendedor</button>
+      <button class="botonesVendedor" type="submit">Buscar Vendedor</button>
     </div>
   </form>
-
+  
   <form class="contenedorBotonesVendedor" action="/vendedor/nuevo" method="get">
     <button class="botonesVendedor" type="submit">Crear Vendedor</button>
   </form>
@@ -69,7 +67,7 @@
     </thead>
 
     <tbody>
-      <tr th:each="vendedor : ${vendedores}">
+      <tr th:each="vendedor : ${vendedor}">
         <td>
           <a th:href="@{/vendedor/{id}(id=${vendedor.id})}" th:text="${vendedor.id}"></a>
         </td>
@@ -78,12 +76,8 @@
         <td th:text="${vendedor.coordenada.lat}"></td>
         <td th:text="${vendedor.coordenada.lng}"></td>
         <td class="contenedorBotonesEditarEliminar">
-          <form th:action="@{/vendedor/editarVendedor/{id}(id=${vendedor.id})}" method="get">
-            <button type="submit" class="botonesEditarVendedor">Editar Vendedor</button>
-          </form>
-          <form th:action="@{/vendedor/eliminarVendedor/{id}(id=${vendedor.id})}" method="get">
-            <button type="submit" class="botonesEliminarVendedor">Eliminar Vendedor</button>
-          </form>
+          <button class="botonesEditarVendedor" th:onclick="location.href='@{/vendedor/editar/{id}(id=${vendedor.id})}'" type="button">Editar Vendedor</button>
+          <button class="botonesEliminarVendedor" type="submit">Eliminar Vendedor</button>
         </td>
       </tr>
     </tbody>
