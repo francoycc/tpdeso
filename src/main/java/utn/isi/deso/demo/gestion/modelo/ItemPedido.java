@@ -17,7 +17,7 @@ import lombok.*;
 public class ItemPedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
 //    @ManyToOne
 //    @JoinColumn(name = "item_menu_id", nullable = false)

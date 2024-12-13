@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import utn.isi.deso.demo.gestion.modelo.ItemPedido;
 
 
-public interface ItemPedidoRepository extends CrudRepository<ItemPedido, Long> {
+public interface ItemPedidoRepository extends CrudRepository<ItemPedido, Integer> {
         List<ItemPedido> findByCantidadBetween(double min, double max);
 
 }

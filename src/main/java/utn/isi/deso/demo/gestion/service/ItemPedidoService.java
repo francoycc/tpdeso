@@ -28,7 +28,7 @@ public class ItemPedidoService{
         return (List<ItemPedido>) itemPedidoRepository.findAll();
     }
 
-    public Optional<ItemPedido> obtenerItemPedidoPorId(Long id) {
+    public Optional<ItemPedido> obtenerItemPedidoPorId(Integer id) {
         return itemPedidoRepository.findById(id);
     }
 
@@ -40,14 +40,14 @@ public class ItemPedidoService{
         return itemPedidoRepository.save(items);
     }
 
-    public void eliminarItemPedido(Long id) {
+    public void eliminarItemPedido(Integer id) {
         if (!itemPedidoRepository.existsById(id)) {
             throw new ResourceNotFoundException("ItemPedido no encontrado con ID: " + id);
         }
         itemPedidoRepository.deleteById(id);    
     }
 
-    public ItemPedido actualizarItemPedido(long id, ItemPedido items) {
+    public ItemPedido actualizarItemPedido(Integer id, ItemPedido items) {
         ItemPedido itemPedidoExistente = obtenerItemPedidoPorId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ItemsPedido no encontrado con id: " + id));
 

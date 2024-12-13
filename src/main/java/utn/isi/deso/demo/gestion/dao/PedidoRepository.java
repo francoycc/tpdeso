@@ -8,8 +8,8 @@ import utn.isi.deso.demo.gestion.modelo.EstadoPedido;
 import utn.isi.deso.demo.gestion.modelo.Pago;
 import utn.isi.deso.demo.gestion.modelo.Pedido;
 
-public interface PedidoRepository extends CrudRepository<Pedido, Long> {
-    List<Pedido> findByClienteId(long clienteId);
+public interface PedidoRepository extends CrudRepository<Pedido, Integer> {
+    List<Pedido> findByClienteId(Integer clienteId);
 
     // Buscar pedidos por estado
     List<Pedido> findByEstado(EstadoPedido estado);

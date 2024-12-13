@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <h1 class="titulo">PEDIDOS YA</h1>
+    
+    <ul class="menu1">
+        <form action="/vendedor" method="get">
+            <button type="submit" class="menues1">Vendedores</button>
+        </form>
+        <form action="/cliente" method="get">
+            <button type="submit" class="menues1">Clientes</button>
+        </form>
+        <form action="/item-menu" method="get">
+            <button type="submit" class="menues1">Items Menú</button>
+        </form>
+        <form action="/pedido" method="get">
+            <button type="submit" class="menues1">Pedidos</button>
+        </form>
+        <form action="/" method="get">
+            <button type="submit" class="menues1">Volver</button>
+        </form>
+    </ul>
+
+    <form th:action="@{/pedido}" th:object="${pedido}" method="post" class="formulario">
+        <div class="contenedorCampos">
+            <div class="campoPedido">
+                <label for="id">ID Pedido</label>
+                <input type="number" id="id" th:field="*{id}" />
+            </div>
+            <div class="campoPedido">
+                <label for="cliente">Cliente</label>
+                <input type="text" id="cliente" th:field="*{cliente.nombre}" />
+            </div>
+            <div class="campoPedido">
+                <label for="estadoPedido">Estado Pedido</label>
+                <select id="estadoPedido" th:field="*{estadoPedido}">
+                    <option value="">Todos</option>
+                    <option value="RECIBIDO">Recibido</option>
+                    <option value="EN_PREPARACION">En preparacion</option>
+                    <option value="ENTREGADO">Entregado</option>
+                </select>
+            </div>
+            <div class="campoPedido">
+                <label for="metodoPago">Método de Pago</label>
+                <select id="metodoPago" th:field="*{metodoPago}">
+                    <option value="">Todos</option>
+                    <option value="EFECTIVO">Efectivo</option>
+                    <option value="MERCADOPAGO">MercadoPago</option>
+                    <option value="TRANSFERENCIA">Transferencia</option>
+                </select>
+            </div>
+            <div class="campoPedido">
+                <label for="fechaDesde">Fecha Desde</label>
+                <input type="date" id="fechaDesde" th:field="*{fechaPago}" />
+            </div>
+            <div class="campoPedido">
+                <label for="fechaHasta">Fecha Hasta</label>
+                <input type="date" id="fechaHasta" th:field="*{fechaPago}" />
+            </div>
+        </div>
+        <div class="contenedorBotonesPedido">
+            <button style="background: purple" class="botonesPedido" type="submit">Buscar Pedido</button>
+        </div>
+    </form>
+
+    <form class="contenedorBotonesPedido" action="/pedido/nuevo" method="get">
+        <button class="botonesPedido" type="submit">Crear Pedido</button>
+    </form>
+
+    <table class="tablaVendedor" border="2" cellspacing="0" cellpadding="15">
+        <thead class="tablaVendedor">
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th width="300px">Items</th>
+                <th>Estado</th>
+                <th>Método de Pago</th>
+                <th>Fecha</th>
+                <th width="300px">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="pedido : ${pedidos}">
+                <td th:text="${pedido.id}"></td>
+                <td th:text="${pedido.cliente.nombre}"></td>
+                <td>
+                    <ul>
+                        <li th:each="item : ${pedido.items}">
+                            <span th:text="${item.itemMenu.nombre} + ' (' + ${item.cantidad} + ')'"></span>
+                        </li>
+                    </ul>
+                </td>
+                <td th:text="${pedido.estadoPedido}"></td>
+                <td th:text="${pedido.metodoPago}"></td>
+                <td th:text="${#dates.format(pedido.fechaPago, 'dd/MM/yyyy HH:mm')}"></td>
+                <td class="contenedorBotonesEditarEliminar">
+                  <form th:action="@{/pedido/editarPedido/{id}(id=${pedido.id})}" method="put">
+                    <button type="submit" class="botonesEditarPedido">Editar</button>
+                  </form>
+                  <form th:action="@{/pedido/eliminaPedido/{id}(id=${pedido.id})}" method="post">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <button type="submit" class="botonesEliminarPedido" onclick="return confirm('¿Estás seguro de eliminar este pedido?')">
+                            Eliminar</button> 
+                  </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

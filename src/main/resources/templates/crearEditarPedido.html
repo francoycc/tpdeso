@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crear/Editar Pedido</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/styles.css}">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tipoPagoSelect = document.getElementById('tipoPago');
+            const campoAlias = document.getElementById('campoAlias');
+            const campoTransferencia = document.getElementById('campoTransferencia');
+
+            // Función para mostrar/ocultar campos según el tipo de pago
+            tipoPagoSelect.addEventListener('change', function () {
+                const tipoPago = tipoPagoSelect.value;
+                campoAlias.style.display = tipoPago === 'MERCADOPAGO' ? 'block' : 'none';
+                campoTransferencia.style.display = tipoPago === 'TRANSFERENCIA' ? 'block' : 'none';
+            });
+
+            // Inicializa la visibilidad en caso de que haya un valor seleccionado
+            tipoPagoSelect.dispatchEvent(new Event('change'));
+        });
+    </script>
+</head>
+<body>
+    <h1 class="titulo">PEDIDOS YA</h1>
+    
+    <form th:action="@{/pedido/guardar}" 
+          th:object="${pedido}" 
+          method="post" 
+          class="formulario">
+        
+        <input type="hidden" id="itemsInput" name="items" />
+
+        <!-- Selección de Items -->
+        <label class="labelPedido99" for="itemsMenu">Seleccionar Items del Menú</label>
+        <table class="tablaItems">
+            <thead>
+                <tr>
+                    <th>Seleccionar</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="itemMenu : ${itemsMenu}" 
+                    th:attr="data-item-id=${itemMenu.id}">
+                    <td>
+                        <input type="checkbox" 
+                               id="checkbox_" 
+                               th:id="'checkbox_' + ${itemMenu.id}" 
+                        />
+                    </td>
+                    <td th:text="${itemMenu.nombre}"></td>
+                    <td th:text="${itemMenu.precio}"></td>
+                    <td>
+                        <input class="inputPedido" 
+                               type="number" 
+                               min="1" 
+                               id="cantidad_" 
+                               th:id="'cantidad_' + ${itemMenu.id}" 
+                               placeholder="Cantidad" 
+                        />
+                    </td>
+                    <td>
+                        <button type="button" 
+                                class="botonesPedido1">
+                            Agregar
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Ítems agregados -->
+        <div class="contenedorItemsAgregados">
+            <h3>Ítems Agregados</h3>
+            <table id="tablaItemsAgregados" class="tablaItems">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
+                </tr>
+            </table>
+            <div id="totalPedido" class="totalPedido">Total: $0.00</div>
+        </div>
+
+        <!-- Selección de Cliente -->
+        <label class="labelPedido99" for="clientes">Seleccionar Cliente</label>
+        <div class="contenedorCampos2">
+            <select class="inputPedido" 
+                    id="clienteId"
+                    th:field="*{clienteId}">
+                <option value="" disabled selected>Seleccione un cliente</option>
+                <option th:each="cliente : ${clientes}" 
+                        th:value="${cliente.id}" 
+                        th:text="${cliente.nombre}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Información de Pago -->
+        <label class="labelPedido99" for="pago">Información del Pago</label>
+        <div class="contenedorCampos2">
+            <div class="divsPedido">
+                <label class="labelPedido" for="tipoPago">Tipo de Pago</label>
+                <select class="inputPedido" 
+                        id="tipoPago" 
+                        th:field="*{pago.tipoPago}">
+                    <option value="" disabled selected>Seleccione un tipo de pago</option>
+                    <option value="EFECTIVO">Efectivo</option>
+                    <option value="MERCADOPAGO">MercadoPago</option>
+                    <option value="TRANSFERENCIA">Transferencia</option>
+                </select>
+            </div>
+
+            <!-- Alias (MercadoPago) -->
+            <div class="divsPedido" id="campoAlias" style="display: none;">
+                <label class="labelPedido" for="alias">Alias</label>
+                <input class="inputPedido" 
+                       type="text" 
+                       id="alias"
+                       th:field="*{pago.alias}" 
+                       placeholder="Alias MercadoPago" 
+                />
+            </div>
+
+            <!-- Campos Transferencia -->
+            <div id="campoTransferencia" style="display: none;">
+                <div class="divsPedido">
+                    <label class="labelPedido" for="cbu">CBU</label>
+                    <input class="inputPedido" 
+                           type="text" 
+                           id="cbu"
+                           th:field="*{pago.cbu}" 
+                           placeholder="CBU" 
+                    />
+                </div>
+                <div class="divsPedido">
+                    <label class="labelPedido" for="cuit">CUIT</label>
+                    <input class="inputPedido" 
+                           type="text" 
+                           id="cuit"
+                           th:field="*{pago.cuit}" 
+                           placeholder="CUIT" 
+                    />
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="contenedorBotonesPedido1">
+            <button class="botonesPedido1" type="submit">Guardar Pedido</button>
+        </div>
+    </form>
+
+    <form class="contenedorBotonesPedido" action="/pedido" method="get">
+        <button style="background: red" 
+                type="submit" 
+                class="botonesPedido1">
+            Cancelar
+        </button>
+    </form>
+</body>
+</html>

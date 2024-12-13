@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Efectivo extends Pago {
 
+    public Efectivo(LocalDate fechaPago, double monto) {
+        super(fechaPago, monto);
+    }
+
     @Override
     public double calcularMontoFinal() {
         return getMonto() * 0.95; // Descuento del 5%

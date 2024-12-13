@@ -2,6 +2,7 @@
 package utn.isi.deso.demo.gestion.service;
 
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -16,13 +17,14 @@ import utn.isi.deso.demo.gestion.modelo.ItemPedido;
 import utn.isi.deso.demo.gestion.modelo.Pago;
 import utn.isi.deso.demo.gestion.modelo.PagoFactory;
 import utn.isi.deso.demo.gestion.modelo.Pedido;
+import utn.isi.deso.demo.gestion.modelo.PedidoDTO;
 import utn.isi.deso.demo.tp.ResourceNotFoundException;
 
 
 @Service
 public class PedidoService {
     @Autowired
-    private final ClienteRepository clienteRepository;
+    private final ClienteService clienteService;
 
     @Autowired
     private final PedidoRepository pedidoRepository;
@@ -33,14 +35,14 @@ public class PedidoService {
     @Autowired
     private final PagoFactory pagoFactory;
 
-    public PedidoService(ClienteRepository clienteRepository, PedidoRepository pedidoRepository, PagoFactory pagoFactory) {
-        this.clienteRepository = clienteRepository;
+    public PedidoService(ClienteService clienteService, PedidoRepository pedidoRepository, PagoFactory pagoFactory) {
+        this.clienteService = clienteService;
         this.pedidoRepository = pedidoRepository;
         this.pagoFactory = pagoFactory;
     }
 
     @Transactional
-    public Pedido agregarItemAPedido(Long pedidoId, Long itemMenuId, int cantidad) {
+    public Pedido agregarItemAPedido(Integer pedidoId, Integer itemMenuId, Integer cantidad) {
         Pedido pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado con ID: " + pedidoId));
 //
@@ -54,7 +56,7 @@ public class PedidoService {
     }
 
     @Transactional
-    public Pedido eliminarItemDePedido(long pedidoId, long itemPedidoId) {
+    public Pedido eliminarItemDePedido(Integer pedidoId, Integer itemPedidoId) {
         Pedido pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado con ID: " + pedidoId));
 
@@ -72,23 +74,22 @@ public class PedidoService {
         return pedidoRepository.save(pedido);
     }
 
-    @Transactional
-    public Pedido crearPedido(Pedido pedido) {
-//        Cliente cliente = clienteRepository.findById(pedido.getCliente())
-//                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con ID: " + pedido.getCliente()));
+     public Pedido crearPedido(PedidoDTO pedidoDTO) {
+        Cliente cliente = clienteService.findById(pedidoDTO.getClienteId())
+            .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado"));
 
-//        List<ItemPedido> itemsPedido = pedido.getItemsPedido().stream()
-//                .map(itemDTO -> {
-//                    ItemMenu itemMenu = itemMenuRepository.findById(itemDTO.getItemMenu())
-//                            .orElseThrow(() -> new ResourceNotFoundException("ItemMenu no encontrado con ID: " + itemDTO.getItemMenuId()));
-//                    return new ItemsPedido(itemMenu, itemDTO.getCantidad());
-//                })
-//                .collect(Collectors.toList());
+        Pedido pedido = new Pedido();
+        pedido.setCliente(cliente);
+        pedido.setFechaPago(LocalDate.now());
 
-       
-//        Pago metodoPago = pagoFactory.crearPago(pedido.getMetodoPago(),pedido.getMontoBase(), );
-//        Pedido pedido = new Pedido(cliente, metodoPago);
-//        pedido.setItemsPedido(itemsPedido);
+        // Agregar items al pedido
+        for (ItemPedido item : pedidoDTO.getItems()) {
+            pedido.getItemsPedido().add(item);
+        }
+
+        // Crear el pago utilizando el factory
+        Pago pago = pagoFactory.crearPago(pedidoDTO.getPago());
+        pedido.setMetodoPago(pago);
 
         return pedidoRepository.save(pedido);
     }
@@ -97,11 +98,11 @@ public class PedidoService {
         return (List<Pedido>) pedidoRepository.findAll();
     }
 
-    public Optional<Pedido> obtenerPedidoPorId(Long id) {
+    public Optional<Pedido> obtenerPedidoPorId(Integer id) {
         return pedidoRepository.findById(id);
     }
 
-    public List<Pedido> obtenerPedidosPorCliente(Long clienteId) {
+    public List<Pedido> obtenerPedidosPorCliente(Integer clienteId) {
         return pedidoRepository.findByClienteId(clienteId);
     }
 
@@ -113,7 +114,7 @@ public class PedidoService {
         return pedidoRepository.findByFechaPagoBetween(fechaInicio, fechaFin);
     }
 
-    public Pedido actualizarEstado(Long id, EstadoPedido nuevoEstado) {
+    public Pedido actualizarEstado(Integer id, EstadoPedido nuevoEstado) {
         Pedido pedido = obtenerPedidoPorId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado con ID: " + id));
 
@@ -121,7 +122,7 @@ public class PedidoService {
         return pedidoRepository.save(pedido);
     }
     
-    public Pedido actualizarMetodoPago(Long id, Pago nuevoPago) {
+    public Pedido actualizarMetodoPago(Integer id, Pago nuevoPago) {
         Pedido pedido = obtenerPedidoPorId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado con ID: " + id));
 
@@ -129,7 +130,7 @@ public class PedidoService {
         return pedidoRepository.save(pedido);
     }
 
-    public void eliminarPedido(Long id) {
+    public void eliminarPedido(Integer id) {
         if (!pedidoRepository.existsById(id)) {
             throw new ResourceNotFoundException("Pedido no encontrado con ID: " + id);
         }

@@ -16,7 +16,7 @@ import lombok.*;
 public abstract class Pago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull(message = "La fecha de pago no puede ser nula")
     private LocalDate fechaPago;
@@ -25,6 +25,12 @@ public abstract class Pago {
     @DecimalMin(value = "0.01", message = "El monto base debe ser mayor a 0")
     private double monto;
 
+    public Pago(LocalDate fechaPago, double monto) {
+        this.fechaPago = fechaPago;
+        this.monto = monto;
+    }
+
+    
     public abstract double calcularMontoFinal();
 
     public abstract String getMetodoPago();

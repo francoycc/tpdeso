@@ -3,8 +3,8 @@ package utn.isi.deso.demo.gestion.modelo;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import lombok.*;
 
@@ -19,7 +19,7 @@ public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
@@ -45,7 +45,7 @@ public class Pedido {
     @Column(name = "fecha_pago")
     @Temporal(TemporalType.TIMESTAMP)
     @PastOrPresent(message = "La fecha de pago no puede ser futura.")
-    private Date fechaPago;
+    private LocalDate fechaPago;
 
     @Column(name = "monto_total", nullable = false)
     private double montoTotal;

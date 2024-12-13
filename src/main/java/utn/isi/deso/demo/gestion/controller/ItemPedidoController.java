@@ -33,7 +33,7 @@ public class ItemPedidoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ItemPedido> obtenerItemsPorId(@PathVariable Long id) {
+    public ResponseEntity<ItemPedido> obtenerItemsPorId(@PathVariable Integer id) {
         return itemPedidoService.obtenerItemPedidoPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -46,13 +46,13 @@ public class ItemPedidoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ItemPedido> actualizarItemPedido(@PathVariable Long id, @Validated @RequestBody ItemPedido items) {
+    public ResponseEntity<ItemPedido> actualizarItemPedido(@PathVariable Integer id, @Validated @RequestBody ItemPedido items) {
         ItemPedido actualizado = itemPedidoService.actualizarItemPedido(id, items);
         return ResponseEntity.ok(actualizado);
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarItemPedido(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarItemPedido(@PathVariable Integer id) {
         try {
             itemPedidoService.eliminarItemPedido(id);
             return ResponseEntity.noContent().build();
