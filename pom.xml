@@ -11,7 +11,7 @@
 	<groupId>utn.isi.deso</groupId>
 	<artifactId>demo-tareas</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo-tareas</name>
+	<name>demo</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -30,6 +30,14 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jdbc</artifactId>
@@ -46,10 +54,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+		
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -78,6 +83,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+	 <dependency>
+	  <groupId>jakarta.validation</groupId>
+	  <artifactId>jakarta.validation-api</artifactId>
+	  <version>3.0.2</version>
+	  <type>jar</type>
+	 </dependency>
 	</dependencies>
 
 	<build>
