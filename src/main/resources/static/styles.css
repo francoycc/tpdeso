@@ -189,3 +189,27 @@ th {
   height: 50px;
   line-height: 50px;
 }
+
+.contenedorCamposCliente {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 200px);
+  justify-content: center;
+}
+
+.contenedorCamposCliente label {
+  height: 25px;
+  line-height: 0px;
+}
+.contenedorCamposCliente input {
+  height: 25px;
+  line-height: 0px;
+  border: 3px solid;
+}
+
+.campoCliente {
+  font-size: 30px;
+  margin: 5px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}

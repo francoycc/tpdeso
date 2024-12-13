@@ -2,14 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Vendedores</title>
+  <title>Clientes</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
+
 </head>
 
 <body>
   <h1 class="titulo">PEDIDOS YA</h1>
   <ul class="menu1">
-    <form action="/vendedor" method="get">
+    <form action="/cliente" method="get">
       <button type="submit" class="menues1">Vendedores</button>
     </form>
     <form action="/vendedor" method="get">
@@ -26,39 +27,49 @@
     </form>
   </ul>
 
-  <form th:action="@{/vendedor/editarVendedor}" th:object="${vendedor}" method="post" class="formulario">
+  <form th:action="@{/cliente/buscarCliente}" th:object="${clienteDTO}" method="post" class="formulario">
     <div class="contenedorCampos">
-      <div class="campoVendedor">
+      <div class="campoCliente">
         <label for="nombre">Nombre</label>
         <input type="text" id="nombre" th:field="*{nombre}" />
       </div>
-      <div class="campoVendedor">
+      <div class="campoCliente">
+        <label for="cuit">Cuit</label>
+        <input type="text" id="cuit" th:field="*{cuit}" />
+      </div>
+      <div class="campoCliente">
+        <label for="email">Email</label>
+        <input type="email" id="email" th:field="*{email}" />
+      </div>
+      <div class="campoCliente">
         <label for="direccion">Dirección</label>
         <input type="text" id="direccion" th:field="*{direccion}" />
       </div>
-      <div class="campoVendedor">
-        <label for="coordenada">Latitud</label>
-        <input type="text" id="latitud" th:field="*{coordenada.lat}" />
+      <div class="campoCliente">
+        <label for="latitud">Latitud</label>
+        <input type="number" id="latitud" th:field="*{latitud}" />
       </div>
-      <div class="campoVendedor">
-        <label for="coordenada">Longitud</label>
-        <input type="text" id="longitud" th:field="*{coordenada.lng}" />
+      <div class="campoCliente">
+        <label for="longitud">Longitud</label>
+        <input type="number" id="longitud" th:field="*{longitud}" />
       </div>
     </div>
-    <div class="contenedorBotonesVendedor">
-      <button class="botonesVendedor" type="submit">Buscar Vendedor</button>
+    <div class="contenedorBotonesCliente">
+      <button style="background: purple" class="botonesCliente" type="submit">Buscar Cliente</button>
     </div>
-  </form>
-  
-  <form class="contenedorBotonesVendedor" action="/vendedor/nuevo" method="get">
-    <button class="botonesVendedor" type="submit">Crear Vendedor</button>
   </form>
 
-  <table class="tablaVendedor" border="2" cellspacing="0" cellpadding="15">
-    <thead class="tablaVendedor">
+  <form class="contenedorBotonesCliente" action="/cliente/nuevo" method="get">
+    <button class="botonesCliente" type="submit">Crear Cliente</button>
+  </form>
+
+  <table class="tablaCliente" border="2" cellspacing="0" cellpadding="15">
+    <thead class="tablaCliente">
       <tr>
         <th>ID</th>
         <th>Nombre</th>
+        <th>Cuit</th>
+        <th>Email</th>
         <th>Dirección</th>
         <th>Latitud</th>
         <th>Longitud</th>
@@ -67,17 +78,23 @@
     </thead>
 
     <tbody>
-      <tr th:each="vendedor : ${vendedor}">
+      <tr th:each="cliente : ${clientes}">
         <td>
-          <a th:href="@{/vendedor/{id}(id=${vendedor.id})}" th:text="${vendedor.id}"></a>
+          <a th:href="@{/cliente/{id}(id=${cliente.id})}" th:text="${cliente.id}"></a>
         </td>
-        <td th:text="${vendedor.nombre}"></td>
-        <td th:text="${vendedor.direccion}"></td>
-        <td th:text="${vendedor.coordenada.lat}"></td>
-        <td th:text="${vendedor.coordenada.lng}"></td>
+        <td th:text="${clienteDTO.nombre}"></td>
+        <td th:text="${clienteDTO.cuit}"></td>
+        <td th:text="${clienteDTO.email}"></td>
+        <td th:text="${clienteDTO.direccion}"></td>
+        <td th:text="${clienteDTO.latitud}"></td>
+        <td th:text="${clienteDTO.longitud}"></td>
         <td class="contenedorBotonesEditarEliminar">
-          <button class="botonesEditarVendedor" th:onclick="location.href='@{/vendedor/editar/{id}(id=${vendedor.id})}'" type="button">Editar Vendedor</button>
-          <button class="botonesEliminarVendedor" type="submit">Eliminar Vendedor</button>
+          <form th:action="@{/cliente/editarCliente/{id}(id=${vendedor.id})}" method="get">
+            <button type="submit" class="botonesEditarCliente">Editar Vendedor</button>
+          </form>
+          <form th:action="@{/cliente/eliminarCliente/{id}(id=${cliente.id})}" method="get">
+            <button type="submit" class="botonesEliminarCliente">Eliminar Cliente</button>
+          </form>
         </td>
       </tr>
     </tbody>
