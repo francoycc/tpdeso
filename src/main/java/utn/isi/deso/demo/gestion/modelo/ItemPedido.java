@@ -19,9 +19,9 @@ public class ItemPedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "item_menu_id", nullable = false)
-//    private ItemMenu itemMenu;
+    @ManyToOne
+    @JoinColumn(name = "item_menu_id", nullable = false)
+    private ItemMenu itemMenu;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)
@@ -32,8 +32,14 @@ public class ItemPedido {
     @Min(value = 1, message = "La cantidad debe ser al menos 1.")
     private int cantidad;
 
-//    public double calcularSubtotal() {
-//        return itemMenu.getPrecio() * cantidad;
-//    }
+  public double calcularSubtotal() {
+       return itemMenu.getPrecio() * cantidad;
+    }
+
+    public ItemPedido(ItemMenu itemMenu, int cantidad) {
+        this.itemMenu = itemMenu;
+        this.cantidad = cantidad;
+    }
+  
 }
 

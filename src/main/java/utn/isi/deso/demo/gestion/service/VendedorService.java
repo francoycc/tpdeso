@@ -26,7 +26,10 @@ public class VendedorService {
     public Optional<Vendedor> findById(Integer id) {
         return vendedorRepository.findById(id);
     }
-
+    public Optional<Vendedor> findByNombre(String nombre) {
+        return vendedorRepository.findByNombre(nombre);
+    }
+    
     public List<Vendedor> findByDescripcion(String description) {
         return vendedorRepository.findByNombreContaining(description);
     }

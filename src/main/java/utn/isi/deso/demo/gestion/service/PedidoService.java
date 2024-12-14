@@ -18,7 +18,7 @@ import utn.isi.deso.demo.gestion.modelo.Pago;
 import utn.isi.deso.demo.gestion.modelo.PagoFactory;
 import utn.isi.deso.demo.gestion.modelo.Pedido;
 import utn.isi.deso.demo.gestion.modelo.PedidoDTO;
-import utn.isi.deso.demo.tp.ResourceNotFoundException;
+import tp.ResourceNotFoundException;
 
 
 @Service

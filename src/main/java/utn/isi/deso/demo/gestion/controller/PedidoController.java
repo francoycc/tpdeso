@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,10 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utn.isi.deso.demo.gestion.modelo.Cliente;
 import utn.isi.deso.demo.gestion.modelo.EstadoPedido;
+import utn.isi.deso.demo.gestion.modelo.ItemMenu;
+import utn.isi.deso.demo.gestion.modelo.ItemPedidoDTO;
 import utn.isi.deso.demo.gestion.modelo.Pago;
 import utn.isi.deso.demo.gestion.modelo.Pedido;
 import utn.isi.deso.demo.gestion.modelo.PedidoDTO;
 import utn.isi.deso.demo.gestion.service.ClienteService;
+import utn.isi.deso.demo.gestion.service.ItemMenuService;
 import utn.isi.deso.demo.gestion.service.PedidoService;
 
 
@@ -89,7 +93,7 @@ public class PedidoController {
     @GetMapping("/nuevo")
     public String mostrarFormularioAlta(Model model) {
         List<Cliente> clientes = clienteService.findAll();
-        List<ItemMenu> itemsMenu = itemMenuService.findAll();
+        List<ItemMenu> itemsMenu = itemMenuService.listarTodosLosItems();
 
         PedidoDTO pedidoNuevo = new PedidoDTO();
 
@@ -100,75 +104,75 @@ public class PedidoController {
         return "crearEditarPedido";
     }
 
-    @PostMapping("/guardar")
-    public String guardarPedido(@ModelAttribute("pedido") PedidoDTO pedidoDTO, RedirectAttributes redirectAttributes) {
-        logger.info("Guardando Pedido: " + pedidoDTO);
-        if (itemsAgregados.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Debe agregar al menos un ítem al pedido.");
-            return "redirect:/pedido/nuevo";
-        }
-        pedidoDTO.setItems(itemsAgregados);
-        pedidoDTO.setTotal(totalPedido);
-
-        pedidoService.crearPedido(pedidoDTO);
-
-        itemsAgregados.clear();
-        totalPedido = 0;
-
-        redirectAttributes.addFlashAttribute("success", "Pedido guardado correctamente.");
-        return "redirect:/pedido";
-    }
-
-    @PostMapping("/buscar")
-    public String buscarPedido(@ModelAttribute Pedido pedido, Model model) {
-        List<Pedido> pedidos = pedidoService.buscarPorCriterios(
-                pedido.getCliente(),
-                pedido.getEstado(),
-                pedido.getFechaPago(),
-                pedido.getMetodoPago()
-        );
-        model.addAttribute("pedidos", pedidos);
-        logger.info("Pedidos encontrados: " + pedidos);
-        return "pedidos";
-    }
-
-    @PostMapping("/agregar-item")
-    public String agregarItem(@RequestParam("id") int id,
-                              @RequestParam("nombre") String nombre,
-                              @RequestParam("precio") double precio,
-                              @RequestParam("cantidad") int cantidad,
-                              RedirectAttributes redirectAttributes) {
-        if (cantidad <= 0) {
-            redirectAttributes.addFlashAttribute("error", "La cantidad debe ser mayor a cero.");
-            return "redirect:/pedido/nuevo";
-        }
-
-        ItemPedidoDTO itemExistente = itemsAgregados.stream()
-                .filter(item -> item.getId() == id)
-                .findFirst()
-                .orElse(null);
-
-        if (itemExistente != null) {
-            itemExistente.setCantidad(cantidad);
-            itemExistente.setSubtotal(precio * cantidad);
-        } else {
-            ItemPedidoDTO nuevoItem = new ItemPedidoDTO(id, nombre, precio, cantidad, precio * cantidad);
-            itemsAgregados.add(nuevoItem);
-        }
-
-        totalPedido = itemsAgregados.stream().mapToDouble(ItemPedidoDTO::getSubtotal).sum();
-
-        redirectAttributes.addFlashAttribute("success", "Ítem agregado correctamente.");
-        return "redirect:/pedido/nuevo";
-    }
-
-    @PostMapping("/eliminar-item/{id}")
-    public String eliminarItem(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
-        itemsAgregados.removeIf(item -> item.getId() == id);
-        totalPedido = itemsAgregados.stream().mapToDouble(ItemPedidoDTO::getSubtotal).sum();
-        redirectAttributes.addFlashAttribute("success", "Ítem eliminado correctamente.");
-        return "redirect:/pedido/nuevo";
-    }
+//    @PostMapping("/guardar")
+//    public String guardarPedido(@ModelAttribute("pedido") PedidoDTO pedidoDTO, RedirectAttributes redirectAttributes) {
+//        logger.info("Guardando Pedido: " + pedidoDTO);
+//        if (itemsAgregados.isEmpty()) {
+//            redirectAttributes.addFlashAttribute("error", "Debe agregar al menos un ítem al pedido.");
+//            return "redirect:/pedido/nuevo";
+//        }
+//        pedidoDTO.setItems(itemsAgregados);
+//        pedidoDTO.setTotal(totalPedido);
+//
+//        pedidoService.crearPedido(pedidoDTO);
+//
+//        itemsAgregados.clear();
+//        totalPedido = 0;
+//
+//        redirectAttributes.addFlashAttribute("success", "Pedido guardado correctamente.");
+//        return "redirect:/pedido";
+//    }
+//
+//    @PostMapping("/buscar")
+//    public String buscarPedido(@ModelAttribute Pedido pedido, Model model) {
+//        List<Pedido> pedidos = pedidoService.buscarPorCriterios(
+//                pedido.getCliente(),
+//                pedido.getEstado(),
+//                pedido.getFechaPago(),
+//                pedido.getMetodoPago()
+//        );
+//        model.addAttribute("pedidos", pedidos);
+//        logger.info("Pedidos encontrados: " + pedidos);
+//        return "pedidos";
+//    }
+//
+//    @PostMapping("/agregar-item")
+//    public String agregarItem(@RequestParam("id") int id,
+//                              @RequestParam("nombre") String nombre,
+//                              @RequestParam("precio") double precio,
+//                              @RequestParam("cantidad") int cantidad,
+//                              RedirectAttributes redirectAttributes) {
+//        if (cantidad <= 0) {
+//            redirectAttributes.addFlashAttribute("error", "La cantidad debe ser mayor a cero.");
+//            return "redirect:/pedido/nuevo";
+//        }
+//
+//        ItemPedidoDTO itemExistente = itemsAgregados.stream()
+//                .filter(item -> item.getId() == id)
+//                .findFirst()
+//                .orElse(null);
+//
+//        if (itemExistente != null) {
+//            itemExistente.setCantidad(cantidad);
+//            itemExistente.setSubtotal(precio * cantidad);
+//        } else {
+//            ItemPedidoDTO nuevoItem = new ItemPedidoDTO(id, nombre, precio, cantidad, precio * cantidad);
+//            itemsAgregados.add(nuevoItem);
+//        }
+//
+//        totalPedido = itemsAgregados.stream().mapToDouble(ItemPedidoDTO::getSubtotal).sum();
+//
+//        redirectAttributes.addFlashAttribute("success", "Ítem agregado correctamente.");
+//        return "redirect:/pedido/nuevo";
+//    }
+//
+//    @PostMapping("/eliminar-item/{id}")
+//    public String eliminarItem(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
+//        itemsAgregados.removeIf(item -> item.getId() == id);
+//        totalPedido = itemsAgregados.stream().mapToDouble(ItemPedidoDTO::getSubtotal).sum();
+//        redirectAttributes.addFlashAttribute("success", "Ítem eliminado correctamente.");
+//        return "redirect:/pedido/nuevo";
+//    }
 
     @DeleteMapping("/eliminarPedido/{id}")
     public String eliminarPedido(@PathVariable Integer id) {

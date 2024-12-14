@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear/Editar Item Menú</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/styles.css}">
+</head>
+<body>
+  <h1 class="titulo">PEDIDOS YA</h1>
+  <form th:action="@{/itemMenu/guardar}" th:object="${itemMenu}" method="post" class="formulario">
+    <label class="labelVendedor99" for="crearCliente">Crear Item Menú</label>
+    <div class="contenedorCampos2">
+      <div class="divsVendedor">
+        <input type="hidden" name="id" th:field="*{id}" />
+        <label class="labelVendedor" for="nombre">Nombre</label>
+        <input class="inputVendedor" type="text" id="nombre" th:field="*{nombre}" />
+      </div>
+      <div class="divsVendedor">
+        <label class="labelVendedor" for="descripcion">Descripción</label>
+        <input class="inputVendedor" type="text" id="descripcion" th:field="*{descripcion}" />
+      </div>
+    </div>
+    <div class="contenedorCampos2">
+      <div class="divsVendedor">
+        <label class="labelVendedor" for="precio">Precio</label>
+        <input class="inputVendedor" type="text" id="precio" th:field="*{precio}" />
+      </div>
+      <div class="divsVendedor">
+        <label class="labelVendedor" for="tipo">Categoría</label>
+        <select style="margin-top: 12.5px" class="inputVendedor" id="tipo" th:field="*{tipo}">
+          <option value="" disabled selected>Seleccione una</option>
+          <option value="PLATO">PLATO</option>
+          <option value="BEBIDA">BEBIDA</option>
+        </select>
+      </div>
+    </div>
+    
+    <div th:if="${itemMenu.tipo == 'BEBIDA'}" class="contenedorCampos2">
+      <div class="divsVendedor">
+        <label class="labelVendedor" for="tamanio">Tamaño</label>
+        <input class="inputVendedor" type="number" id="tamanio" th:field="*{tamanio}" />
+      </div>
+      <div class="divsVendedor">
+        <label class="labelVendedor" for="graduacionAlcoholica">Alcohólica</label>
+        <select style="margin-top: 12.5px" class="inputVendedor" id="graduacionAlcoholica" th:field="*{graduacionAlcoholica}">
+          <option value="" disabled selected>Seleccione una</option>
+          <option value="false">NO</option>
+          <option value="true">SI</option>
+        </select>
+      </div>
+    </div>
+
+    <div th:if="${itemMenu.tipo == 'PLATO'}" class="contenedorCampos3">
+      <div class="divsItemsMenu">
+        <label class="labelItemMenu" for="peso">Peso</label>
+        <input class="inputItemMenu" type="number" id="peso" th:field="*{peso}" />
+      </div>
+      <div class="divsItemsMenu">
+        <label class="labelItemMenu" for="calorias">Calorías</label>
+        <input class="inputItemMenu" type="number" id="calorias" th:field="*{calorias}" />
+      </div>
+      <div class="divsItemsMenu">
+        <label class="labelItemMenu" for="aptoVegano">Apto Vegano</label>
+        <select style="margin-top: 12.5px" class="inputItemMenu" id="aptoVegano" th:field="*{aptoVegano}">
+          <option value="" disabled selected>Seleccione una</option>
+          <option value="false">NO</option>
+          <option value="true">SI</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="contenedorBotonesVendedor">
+      <button class="botonesVendedor" type="submit">Guardar Item Menú</button>
+    </div>
+  </form>
+  <form style="margin-bottom: 30px" class="contenedorBotonesVendedor" action="/itemMenu" method="get">
+    <button style="background: red" type="submit" class="botonesVendedor">Cancelar</button>
+  </form>
+</body>
+</html>

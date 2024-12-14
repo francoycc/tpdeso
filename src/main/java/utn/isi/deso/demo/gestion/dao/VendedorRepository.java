@@ -2,6 +2,7 @@
 package utn.isi.deso.demo.gestion.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +13,7 @@ import utn.isi.deso.demo.gestion.modelo.Vendedor;
 @Repository
 public interface VendedorRepository extends JpaRepository<Vendedor, Integer> {
     // Métodos de consulta personalizados si es necesario
+    Optional<Vendedor> findByNombre(String nombre);
 
     List<Vendedor> findByNombreContaining(String nombre);
     

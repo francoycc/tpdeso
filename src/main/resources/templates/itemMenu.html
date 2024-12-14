@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Vendedores</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" href="../static/styles.css" type="text/css" />
+
+</head>
+
+<body>
+  <h1 class="titulo">PEDIDOS YA</h1>
+  <ul class="menu1">
+    <form action="/vendedor" method="get">
+      <button type="submit" class="menues1">Vendedores</button>
+    </form>
+    <form action="/cliente" method="get">
+      <button type="submit" class="menues1">Clientes</button>
+    </form>
+    <form action="/itemMenu" method="get">
+      <button type="submit" class="menues1">Items Menú</button>
+    </form>
+    <form action="/vendedor" method="get">
+      <button type="submit" class="menues1">Pedidos</button>
+    </form>
+    <form action="/" method="get">
+      <button type="submit" class="menues1">Volver</button>
+    </form>
+  </ul>
+
+  <form th:action="@{/itemMenu}" method="post" class="formulario">
+    <div class="contenedorCamposCliente">
+      <div class="campoCliente">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" th:field="*{itemMenu.nombre}" />
+      </div>
+      <div class="campoCliente">
+        <label for="descripcion">Descripción</label>
+        <input type="text" id="descripcion" th:field="*{itemMenu.descripcion}" />
+      </div>
+      <div class="campoCliente">
+        <label for="precio">Precio</label>
+        <input type="number" id="precio" th:field="*{itemMenu.precio}" />
+      </div>
+      <div class="campoCliente">
+        <label for="categoria">Categoría</label>
+        <input type="text" id="categoria" th:field="*{itemMenu.categoria}" />
+      </div>
+    </div>
+    <div class="contenedorBotonesVendedor">
+      <button style="background: purple" class="botonesVendedor" type="submit">Buscar Item Menú</button>
+    </div>
+  </form>
+
+  <form class="contenedorBotonesVendedor" action="/itemMenu/nuevo" method="get">
+    <button class="botonesVendedor" type="submit">Crear Item Menú</button>
+  </form>
+
+  <table class="tablaVendedor" border="2" cellspacing="0" cellpadding="15">
+    <thead class="tablaVendedor">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Categoría</th>
+        <th width="300px">Editar/Eliminar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr th:each="itemMenu : ${itemMenus}">
+        <td>
+          <a th:href="@{/itemMenu/{id}(id=${itemMenu.id})}" th:text="${itemMenu.id}"></a>
+        </td>
+        <td th:text="${itemMenu.nombre}"></td>
+        <td th:text="${itemMenu.descripcion}"></td>
+        <td th:text="${itemMenu.precio}"></td>
+        <td th:text="${itemMenu.categoria}"></td>
+        <td class="contenedorBotonesEditarEliminar">
+          <form th:action="@{/itemMenu/editarItemMenu/{id}(id=${itemMenu.id})}" method="get">
+            <button type="submit" class="botonesEditarVendedor">Editar Item Menú</button>
+          </form>
+          <form th:action="@{/itemMenu/eliminarItemMenu/{id}(id=${itemMenu.id})}" method="get">
+            <button type="submit" class="botonesEliminarVendedor">Eliminar Item Menú</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</body>
+
+</html>
